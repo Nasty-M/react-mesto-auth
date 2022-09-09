@@ -1,8 +1,8 @@
 import PopupWithoutForm from "./PopupWithoutForm";
-import SuccessIcon from '../images/success.png';
-import ErrorIcon from '../images/fail.png';
+import successIcon from '../images/success.png';
+import errorIcon from '../images/fail.png';
 
-function PopupAuthInfo(props) {
+function InfoToolTip(props) {
   return (
     <PopupWithoutForm
       name="result"
@@ -14,9 +14,9 @@ function PopupAuthInfo(props) {
       isOpen={props.isOpen}
       onClose={props.onClose}
     >
-      <img src={props.answer ? SuccessIcon : ErrorIcon} alt={props.answer ? "Успех" : "Ошибка"} className="popup__icon" />
+      <img src={props.answer ? successIcon : errorIcon} alt={props.answer ? "Успех" : "Ошибка"} className="popup__icon" />
     </PopupWithoutForm>
   )  
 }
 
-export default PopupAuthInfo;
+export default InfoToolTip;

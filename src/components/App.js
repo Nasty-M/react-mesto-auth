@@ -11,7 +11,7 @@ import { Switch, Route, withRouter } from 'react-router-dom';
 import Login from './Login';
 import Register from './Register';
 import registerApi from '../utils/RegisterApi';
-import PopupAuthInfo from './PopupAuthInfo';
+import InfoToolTip from './InfoToolTip';
 
 function App(props) {
 
@@ -25,6 +25,7 @@ function App(props) {
   const [pageData, setPageData] = useState(false);
   const [popupOpened, setPopupOpened] = useState(false);
   const [popupWithoutForm, setPopupWithoutForm] = useState(false);
+  const isOpen = isEditAvatarPopupOpen || isEditProfilePopupOpen || isAddPlacePopupOpen || selectedCard.link
 
 
   useEffect(() => {
@@ -91,6 +92,21 @@ function App(props) {
   function handleCardClick(card) {
     setSelectedCard(card)
   };
+
+  useEffect(() => {
+    function closeByEscape(evt) {
+      if(evt.key === 'Escape') {
+        closeAllPopups();
+      }
+    }
+    if(isOpen) {
+      document.addEventListener('keydown', closeByEscape);
+      return () => {
+        document.removeEventListener('keydown', closeByEscape);
+      }
+    }
+  }, [isOpen]) 
+
 
   function handleUpdateUser(data) {
     api.editUserInfo(data)
@@ -198,14 +214,10 @@ function App(props) {
       <div className="page">
         <Switch>
           <Route path="/sign-in">
-            <div className="login">
-              <Login onLoginUser={handleLoginUser} />
-            </div>
+            <Login onLoginUser={handleLoginUser} />
           </Route>
           <Route path="/sign-up">
-            <div className="register">
-              <Register onRegisterUser={handleRegisterUser} />
-            </div>
+            <Register onRegisterUser={handleRegisterUser} />
           </Route>
           <ProtectedRoute exact 
             path="/"
@@ -232,7 +244,7 @@ function App(props) {
         <PopupEditProfile isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser}/>
         <PopupAddPlace isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace={handleAddPlaceSubmit} />
         <PopupEditAvatar isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar} />
-        <PopupAuthInfo isOpen={popupWithoutForm} onClose={closePopupWithoutForm} answer={popupOpened} />
+        <InfoToolTip isOpen={popupWithoutForm} onClose={closePopupWithoutForm} answer={popupOpened} />
       </div>
     </CurrentUserContext.Provider>
     

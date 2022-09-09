@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Header from "./Header";
 
 function Login(props) {
@@ -20,9 +20,13 @@ function Login(props) {
       email, 
       password
     })
+  }
+
+  useEffect(() => {
     setEmail('');
     setPassword('');
-  }
+  }, []);
+
   
   return (
     <main className="content">
